@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectMigrations">
+    <option name="MigrateToGradleLocalJavaHome">
+      <set>
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/FinalProject-HabitApp" />
+=======
+        <option value="$PROJECT_DIR$" />
+>>>>>>> 9ba2c10 (I made a lot of changes, but the project dc'd from github (I love github) so this is the reattaching commit)
+      </set>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="StudioBotProjectSettings">
+<<<<<<< HEAD
+    <option name="shareContext" value="OptedIn" />
+=======
+    <option name="shareContext" value="OptedOut" />
+>>>>>>> 9ba2c10 (I made a lot of changes, but the project dc'd from github (I love github) so this is the reattaching commit)
+  </component>
+</project>
