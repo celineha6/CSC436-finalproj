@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
+// TODO: Move the home screen code to HomeScreen.kt so that we can
+//  add it to Routes and save MainActivity for other things
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
