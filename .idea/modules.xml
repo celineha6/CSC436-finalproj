@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Agile_Poker.iml" filepath="$PROJECT_DIR$/.idea/modules/Agile_Poker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Agile_Poker.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Final Project.iml" filepath="$PROJECT_DIR$/.idea/Final Project.iml" />
     </modules>
   </component>

@@ -29,21 +29,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.csse.ceha.mobileapp.ui.theme.MobileappTheme
+import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
+// TODO: Move the home screen code to HomeScreen.kt so that we can
+//  add it to Routes and save MainActivity for other things
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MobileappTheme {
-                MobileappScreen(modifier = Modifier.fillMaxSize())
+            MobileAppTheme {
+                MobileAppScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
 }
 @Composable
-fun MobileappScreen(
+fun MobileAppScreen(
     modifier: Modifier = Modifier
 ) {
     val pageBackground = Color(0xFF1D5A46)
@@ -211,8 +213,8 @@ private fun HabitChecklistItem(
 
 @Preview(showBackground = true)
 @Composable
-fun MobileappPreview() {
-    MobileappTheme {
-        MobileappScreen(modifier = Modifier.fillMaxSize())
+fun MobileAppPreview() {
+    MobileAppTheme {
+        MobileAppScreen(modifier = Modifier.fillMaxSize())
     }
 }
