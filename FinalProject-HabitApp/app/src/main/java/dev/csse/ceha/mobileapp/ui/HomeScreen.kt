@@ -2,6 +2,7 @@ package dev.csse.ceha.mobileapp.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,12 +32,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
+
+private val homeScreenPreviewModel = NViewModel()
 
 @Composable
 fun HomeScreen(
+    model: NViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    var newTaskText by remember { mutableStateOf("") }
+
     val pageBackground = Color(0xFF1D5A46)
     val headerBackground = Color(0xFF21473B)
     val lightButton = Color(0xFFC4D6B7)
@@ -72,7 +85,7 @@ fun HomeScreen(
                 .padding(horizontal = 28.dp, vertical = 34.dp)
         ) {
             Text(
-                text = "MAY 23, 2024",
+                text = model.dateLabel,
                 color = textColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -92,8 +105,8 @@ fun HomeScreen(
                     Text(text = "", fontSize = 37.sp)
                 }
                 Column(modifier = Modifier.padding(start = 16.dp)) {
-                    Text(text = "Character Name", color = textColor, fontSize = 18.sp)
-                    Text(text = "LVL 1", color = textColor, fontSize = 14.sp)
+                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)
+                    Text(text = model.levelLabel, color = textColor, fontSize = 14.sp)
                 }
             }
 
@@ -103,50 +116,65 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                HabitTab(
-                    label = "Water",
-                    selected = true,
-                    selectedColor = lightButton,
-                    outlineColor = outlineColor,
-                    textColor = Color(0xFF1A2D27),
-                    modifier = Modifier.weight(1f)
-                )
-                HabitTab(
-                    label = "Meals",
-                    selected = false,
-                    selectedColor = lightButton,
-                    outlineColor = outlineColor,
-                    textColor = textColor,
-                    modifier = Modifier.weight(1f)
-                )
-                HabitTab(
-                    label = "Exercise",
-                    selected = false,
-                    selectedColor = lightButton,
-                    outlineColor = outlineColor,
-                    textColor = textColor,
-                    modifier = Modifier.weight(1f)
-                )
+                model.habitTabs.forEachIndexed { index, tabLabel ->
+                    val selected = index == model.selectedTabIndex
+                    HabitTab(
+                        label = tabLabel,
+                        selected = selected,
+                        selectedColor = lightButton,
+                        outlineColor = outlineColor,
+                        textColor = if (selected) Color(0xFF1A2D27) else textColor,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { model.selectTab(index) }
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "0 completed", color = textColor, fontSize = 13.sp)
+                Text(text = "${model.completedCount} completed", color = textColor, fontSize = 13.sp)
                 Text(text = "  •  ", color = textColor, fontSize = 13.sp)
-                Text(text = "Clear", color = Color(0xFF29A9FF), fontSize = 13.sp)
+                Text(
+                    text = "Clear",
+                    color = Color(0xFF29A9FF),
+                    fontSize = 13.sp,
+                    modifier = Modifier.clickable { model.clearCurrentTabCompletions() }
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            listOf(
-                "drink water at 10am",
-                "drink water at 12pm",
-                "drink water at 2pm",
-                "drink water at 4pm",
-                "drink water at 6pm"
-            ).forEach { item ->
-                HabitChecklistItem(item = item, textColor = textColor)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = newTaskText,
+                    onValueChange = { newTaskText = it },
+                    label = { Text("New task") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f)
+                )
+                Button(onClick = {
+                    model.addHabitItem(newTaskText)
+                    newTaskText = ""
+                }) {
+                    Text("Add")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            model.currentHabitItems.forEachIndexed { index, item ->
+                HabitChecklistItem(
+                    item = item.label,
+                    checked = item.completed,
+                    textColor = textColor,
+                    onToggle = { model.toggleHabitItem(index) }
+                )
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
@@ -177,14 +205,29 @@ private fun HabitTab(
 @Composable
 private fun HabitChecklistItem(
     item: String,
-    textColor: Color
+    checked: Boolean,
+    textColor: Color,
+    onToggle: () -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable { onToggle() }
+    ) {
         Box(
             modifier = Modifier
                 .size(14.dp)
-                .background(Color(0xFFE8ECEA))
-        )
+                .background(if (checked) Color(0xFF8BC34A) else Color(0xFFE8ECEA)),
+            contentAlignment = Alignment.Center
+        ) {
+            if (checked) {
+                Text(
+                    text = "✓",
+                    color = Color.White,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
         Text(
             text = item,
             color = textColor,
@@ -198,7 +241,7 @@ private fun HabitChecklistItem(
 @Composable
 private fun HomeScreenPreview() {
     MobileAppTheme {
-        HomeScreen(modifier = Modifier.fillMaxSize())
+        HomeScreen(model = homeScreenPreviewModel, modifier = Modifier.fillMaxSize())
     }
 }
 
