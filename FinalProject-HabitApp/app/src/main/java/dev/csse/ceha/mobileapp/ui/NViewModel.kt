@@ -23,7 +23,14 @@ class NViewModel: ViewModel() {
     // HomeScreen UI state
     val dateLabel = "MAY 23, 2024"
     val characterName = "Character Name"
-    val levelLabel = "LVL 1"
+    var xp by mutableIntStateOf(0)
+        private set
+
+    val level: Int
+        get() = (xp / 500) + 1   // 500 XP per level (change if you want)
+
+    val levelLabel: String
+        get() = "LVL $level"
 
 		val habitTabs = DEBUG_HABIT_TABS
     // val habitTabs = mutableStateListOf<HabitTab>()
@@ -53,9 +60,15 @@ class NViewModel: ViewModel() {
         currentTab = habitTabs[index]
     }
 
+    private fun addXp(amount: Int) {
+        xp += amount
+    }
+
 		// Modifying the list of items
     fun toggleHabitItem(item: HabitItem) {
 				val oldIndex = currentTab.habitItems.indexOf(item)
+                val wasCompleted = item.completed
+                val nowCompleted = !wasCompleted
 				val newItem = item
 						.copy(
 								completed = !item.completed
@@ -63,6 +76,10 @@ class NViewModel: ViewModel() {
 
 				currentTab.habitItems[oldIndex] = newItem
 				Log.d("itemAtOldIndex: ${currentTab.habitItems[oldIndex]}", "this is whatever is at the old index")
+            // Award XP only when marking complete (not when unchecking)
+            if (!wasCompleted && nowCompleted) {
+                addXp(10) // choose your XP amount
+            }
     }
 
     fun clearCurrentTabCompletions() {
@@ -92,5 +109,21 @@ class NViewModel: ViewModel() {
 
 						addHabitItem(debugHabitItem, habitTabs.random())
         }
+    }
+    val shopItems = listOf(
+        ShopItem("hat1", "Bunny Hat", 50, dev.csse.ceha.mobileapp.R.drawable.rabbit),
+        ShopItem("plant1", "Plant Decor", 30, dev.csse.ceha.mobileapp.R.drawable.rabbit)
+    )
+    private val ownedItemIds = mutableStateListOf<String>()
+
+    fun isOwned(itemId: String): Boolean = ownedItemIds.contains(itemId)
+
+    fun purchase(item: ShopItem): Boolean {
+        if (isOwned(item.id)) return false
+        if (xp < item.costXp) return false
+
+        xp -= item.costXp
+        ownedItemIds.add(item.id)
+        return true
     }
 }
