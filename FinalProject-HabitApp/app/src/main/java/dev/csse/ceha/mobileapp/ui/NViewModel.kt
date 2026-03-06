@@ -80,7 +80,7 @@ class NViewModel: ViewModel() {
         for (i in 1 .. qty) {
             val title = "Habit $i"
             val description = "Testing a medium-length description for Task $i."
-            val tab = DEBUG_HABIT_TABS[ceil(Math.random() * DEBUG_HABIT_TABS.size).toInt()]
+            val tab = DEBUG_HABIT_TABS.random()
             val date = Date()
 
             val debugHabitItem = HabitItem(
