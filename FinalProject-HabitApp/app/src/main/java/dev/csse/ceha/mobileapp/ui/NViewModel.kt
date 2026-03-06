@@ -1,145 +1,100 @@
 package dev.csse.ceha.mobileapp.ui
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import dev.csse.ceha.mobileapp.Quest
+import dev.csse.ceha.mobileapp.HabitItem
+import dev.csse.ceha.mobileapp.HabitTab
 import java.util.Date
-
-data class HabitItem(
-    val label: String,
-    val completed: Boolean = false
-)
+import kotlin.math.ceil
 
 class NViewModel: ViewModel() {
 
-    val questList = mutableStateListOf<Quest>()
-    val tagList = mutableStateListOf("Life", "School", "Work", "Fun")
-    val completedQuestsExist: Boolean
-        get() = questList.count { it.completed } > 0
+		private val DEBUG_HABIT_TABS: List<HabitTab> = listOf(
+				HabitTab("Water", mutableListOf()),
+				HabitTab("Meals", mutableListOf()),
+				HabitTab("Exercise", mutableListOf())
+		)
 
     // HomeScreen UI state
     val dateLabel = "MAY 23, 2024"
     val characterName = "Character Name"
     val levelLabel = "LVL 1"
-    val habitTabs = listOf("Water", "Meals", "Exercise")
 
-    var selectedTabIndex by mutableStateOf(0)
-        private set
+		val habitTabs = DEBUG_HABIT_TABS
+    // val habitTabs = mutableStateListOf<HabitTab>()
 
-    private val tabHabitItems = listOf(
-        mutableStateListOf(
-            HabitItem("drink water at 10am"),
-            HabitItem("drink water at 12pm"),
-            HabitItem("drink water at 2pm"),
-            HabitItem("drink water at 4pm"),
-            HabitItem("drink water at 6pm")
-        ),
-        mutableStateListOf(
-            HabitItem("eat breakfast"),
-            HabitItem("eat lunch"),
-            HabitItem("eat dinner")
-        ),
-        mutableStateListOf(
-            HabitItem("stretch for 10 minutes"),
-            HabitItem("go for a walk"),
-            HabitItem("light workout")
-        )
-    )
+    var currentTab by mutableStateOf<HabitTab>(habitTabs[0])
 
     val currentHabitItems: List<HabitItem>
-        get() = tabHabitItems[selectedTabIndex]
+        get() = currentTab.habitItems
 
     val completedCount: Int
         get() = currentHabitItems.count { it.completed }
 
+		val completedHabitItemsExist: Boolean
+				get() = completedCount > 0
+
     // To test how quests look in various interfaces
     init {
-        createDebugQuests(10)
+        createDebugHabitItems(10)
     }
 
     // Basics
-    fun findQuestById(id: String) : Quest? {
-        return questList.find { it.id.toString() == id }
-    }
-
-    fun addQuest(q: Quest) {
-        questList.add(q)
+    fun findHabitItemById(id: String) : HabitItem? {
+        return currentHabitItems.find { it.id.toString() == id }
     }
 
     fun selectTab(index: Int) {
-        selectedTabIndex = index.coerceIn(0, habitTabs.lastIndex)
+        currentTab = habitTabs[index]
     }
 
-    fun toggleHabitItem(index: Int) {
-        val items = tabHabitItems[selectedTabIndex]
-        if (index !in items.indices) return
+		// Modifying the list of items
+    fun toggleHabitItem(item: HabitItem) {
+				val oldIndex = currentTab.habitItems.indexOf(item)
+				val newItem = item
+						.copy(
+								completed = !item.completed
+						)
 
-        val old = items[index]
-        items[index] = old.copy(completed = !old.completed)
+				currentTab.habitItems[oldIndex] = newItem
     }
 
     fun clearCurrentTabCompletions() {
-        val items = tabHabitItems[selectedTabIndex]
-        for (i in items.indices) {
-            if (items[i].completed) {
-                items[i] = items[i].copy(completed = false)
+        for (item in currentTab.habitItems) {
+            if (item.completed) {
+                toggleHabitItem(item)
             }
         }
     }
 
-    fun addHabitItem(label: String) {
-        val trimmed = label.trim()
-        if (trimmed.isEmpty()) return
-
-        tabHabitItems[selectedTabIndex].add(HabitItem(trimmed))
-    }
-
-    fun deleteQuest(q: Quest) {
-        questList.remove(q)
-    }
-
-    // Edits to existing tasks
-    fun toggleQuestCompletion(q: Quest) : Quest {
-        val oldIndex = questList.indexOf(q)
-        val newQuest = q.copy(
-            completed = !q.completed
-        )
-
-        questList[oldIndex] = newQuest
-
-        return newQuest
-    }
-
-    fun setQuestDueDate(q: Quest, d: Date) : Quest {
-        val oldIndex = questList.indexOf(q)
-        val newQuest = q.copy(
-            due = d
-        )
-
-        questList[oldIndex] = newQuest
-
-        return newQuest
+    fun addHabitItem(item: HabitItem) {
+				currentTab.habitItems.add(item)
     }
 
     // Tests
-    fun createDebugQuests(qty: Int) {
+    fun createDebugHabitItems(qty: Int) {
         for (i in 1 .. qty) {
-            val title = "Task $i"
+            val title = "Habit $i"
             val description = "Testing a medium-length description for Task $i."
-            val tags = tagList.slice((i%2)..(1+i%3))
+            val tab = DEBUG_HABIT_TABS[ceil(Math.random() * DEBUG_HABIT_TABS.size).toInt()]
             val date = Date()
 
-            val debugQuest = Quest(
+            val debugHabitItem = HabitItem(
                 title = title,
                 description = description,
-                tags = tags,
+                tab = tab,
                 due = date
             )
 
-            addQuest(debugQuest)
+						for (t in habitTabs) {
+								if (t.title == tab.title) {
+										t.habitItems.add(debugHabitItem)
+								}
+						}
         }
     }
 }

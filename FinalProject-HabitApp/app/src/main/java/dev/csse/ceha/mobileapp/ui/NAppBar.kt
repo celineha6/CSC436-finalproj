@@ -27,7 +27,7 @@ fun NAppBar(
     canNavigateBack: Boolean = false,
     onUpClick: () -> Unit = {},
 
-    canDeleteQuests: Boolean = false,
+    canDeleteHabitItems: Boolean = false,
     onDeleteRequest: () -> Unit = {},
 ) {
     TopAppBar(
@@ -56,9 +56,9 @@ fun NAppBar(
             }
         },
         actions = {
-            if (canDeleteQuests) {
+            if (canDeleteHabitItems) {
                 IconButton(
-                    onClick = { if (model.completedQuestsExist) onDeleteRequest() }
+                    onClick = { if (model.completedHabitItemsExist) onDeleteRequest() }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,

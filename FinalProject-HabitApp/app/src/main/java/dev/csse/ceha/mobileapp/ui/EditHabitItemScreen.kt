@@ -3,11 +3,11 @@ package dev.csse.ceha.mobileapp.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.csse.ceha.mobileapp.Quest
+import dev.csse.ceha.mobileapp.HabitItem
 
 @Composable
-fun QuestInfoScreen(
-    quest: Quest,
+fun EditHabitItemScreen(
+    habitItem: HabitItem,
     modifier: Modifier = Modifier,
     model: NViewModel = viewModel<NViewModel>()
 ) {
