@@ -1,5 +1,6 @@
 package dev.csse.ceha.mobileapp.ui
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,9 +15,9 @@ import kotlin.math.ceil
 class NViewModel: ViewModel() {
 
 		private val DEBUG_HABIT_TABS: List<HabitTab> = listOf(
-				HabitTab("Water", mutableListOf()),
-				HabitTab("Meals", mutableListOf()),
-				HabitTab("Exercise", mutableListOf())
+				HabitTab("Water", mutableStateListOf()),
+				HabitTab("Meals", mutableStateListOf()),
+				HabitTab("Exercise", mutableStateListOf())
 		)
 
     // HomeScreen UI state
@@ -27,7 +28,7 @@ class NViewModel: ViewModel() {
 		val habitTabs = DEBUG_HABIT_TABS
     // val habitTabs = mutableStateListOf<HabitTab>()
 
-    var currentTab by mutableStateOf<HabitTab>(habitTabs[0])
+    var currentTab by mutableStateOf(habitTabs[0])
 
     val currentHabitItems: List<HabitItem>
         get() = currentTab.habitItems
@@ -61,6 +62,7 @@ class NViewModel: ViewModel() {
 						)
 
 				currentTab.habitItems[oldIndex] = newItem
+				Log.d("itemAtOldIndex: ${currentTab.habitItems[oldIndex]}", "this is whatever is at the old index")
     }
 
     fun clearCurrentTabCompletions() {
@@ -71,8 +73,8 @@ class NViewModel: ViewModel() {
         }
     }
 
-    fun addHabitItem(item: HabitItem) {
-				currentTab.habitItems.add(item)
+    fun addHabitItem(item: HabitItem, tab: HabitTab) {
+				tab.habitItems.add(item)
     }
 
     // Tests
@@ -80,21 +82,15 @@ class NViewModel: ViewModel() {
         for (i in 1 .. qty) {
             val title = "Habit $i"
             val description = "Testing a medium-length description for Task $i."
-            val tab = DEBUG_HABIT_TABS.random()
             val date = Date()
 
             val debugHabitItem = HabitItem(
                 title = title,
                 description = description,
-                tab = tab,
                 due = date
             )
 
-						for (t in habitTabs) {
-								if (t.title == tab.title) {
-										t.habitItems.add(debugHabitItem)
-								}
-						}
+						addHabitItem(debugHabitItem, habitTabs.random())
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.csse.ceha.mobileapp.ui.HomeScreen
+import dev.csse.ceha.mobileapp.ui.NApp
 import dev.csse.ceha.mobileapp.ui.NViewModel
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
@@ -17,11 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MobileAppTheme {
-                val model: NViewModel = viewModel()
-                HomeScreen(
-                    model = model,
-                    modifier = Modifier.fillMaxSize()
-                )
+                NApp()
             }
         }
     }

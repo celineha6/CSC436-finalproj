@@ -160,12 +160,13 @@ fun HomeScreen(
                     modifier = Modifier.weight(1f)
                 )
                 Button(onClick = {
-										val newItem = HabitItem(
-												title = newTaskText,
-												tab = model.currentTab
-										)
-                    model.addHabitItem(newItem)
-                    newTaskText = ""
+										if (newTaskText != "") {
+												val newItem = HabitItem(
+														title = newTaskText
+												)
+												model.addHabitItem(newItem, model.currentTab)
+												newTaskText = ""
+										}
                 }) {
                     Text("Add")
                 }
@@ -173,7 +174,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            model.currentHabitItems.forEachIndexed { index, item ->
+            model.currentHabitItems.forEach { item ->
                 HabitChecklistItem(
                     item = item.title,
                     checked = item.completed,
