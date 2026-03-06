@@ -34,7 +34,7 @@ fun NAppBar(
         // TODO: Make our own unique styling (I copied this one from TaskStak)
         title = { Text(
             "Nurture",
-            style = MaterialTheme.typogralphy.displayLarge
+            style = MaterialTheme.typography.displayLarge
         ) },
         colors = TopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
