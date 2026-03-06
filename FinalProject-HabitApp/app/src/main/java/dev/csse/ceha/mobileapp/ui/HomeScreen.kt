@@ -106,7 +106,7 @@ fun HomeScreen(
                     Text(text = "", fontSize = 37.sp)
                 }
                 Column(modifier = Modifier.padding(start = 16.dp)) {
-                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)
+//                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)
                     Text(text = model.levelLabel, color = textColor, fontSize = 14.sp)
                 }
             }
