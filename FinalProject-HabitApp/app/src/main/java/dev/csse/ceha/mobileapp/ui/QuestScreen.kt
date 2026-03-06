@@ -2,7 +2,6 @@ package dev.csse.ceha.mobileapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import dev.csse.ceha.mobileapp.R
 
 /**
@@ -30,11 +30,10 @@ import dev.csse.ceha.mobileapp.R
  */
 @Composable
 fun QuestProgressScreen(
+    navController: NavController,
     model: NViewModel = viewModel(),
-    modifier: Modifier = Modifier,
-    onMenuClick: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
-    // You can replace this hardcoded list later with model-backed quests.
     val quests = listOf(
         Triple("Drink Water", 0.6f, "3 / 5"),
         Triple("Exercise", 0.8f, "4 / 5"),
@@ -46,7 +45,9 @@ fun QuestProgressScreen(
         levelLabel = model.levelLabel,
         quests = quests,
         modifier = modifier,
-        onMenuClick = onMenuClick
+        onGoHome = { navController.navigate(Routes.Home) },
+        onGoProfile = { navController.navigate(Routes.Profile) },
+        onGoShop = { navController.navigate(Routes.Shop) }
     )
 }
 
@@ -59,6 +60,9 @@ fun QuestProgressContent(
     levelLabel: String,
     quests: List<Triple<String, Float, String>>,
     modifier: Modifier = Modifier,
+    onGoHome: () -> Unit = {},
+    onGoProfile: () -> Unit = {},
+    onGoShop: () -> Unit = {},
     onMenuClick: () -> Unit = {}
 ) {
     val pageBackground = Color(0xFF1D5A46)
@@ -88,12 +92,14 @@ fun QuestProgressContent(
                 letterSpacing = 1.sp
             )
 
-            androidx.compose.material3.Text(
-                text = "≡",
-                color = textColor,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.clickable { onMenuClick() }
+            HamburgerMenu(
+                actions = listOf(
+                    MenuAction("Home") { onGoHome() },
+                    MenuAction("Profile") { onGoProfile() },
+                    MenuAction("Shop") { onGoShop() }
+                ),
+                iconColor = textColor,
+                modifier = Modifier
             )
         }
 
