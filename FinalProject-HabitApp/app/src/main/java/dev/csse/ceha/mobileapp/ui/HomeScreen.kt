@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
 private val homeScreenPreviewModel = NViewModel()
@@ -116,10 +117,10 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                model.habitTabs.forEachIndexed { index, tabLabel ->
-                    val selected = index == model.selectedTabIndex
+                model.habitTabs.forEachIndexed { index, tab ->
+                    val selected = (tab.title == model.currentTab.title)
                     HabitTab(
-                        label = tabLabel,
+                        label = tab.title,
                         selected = selected,
                         selectedColor = lightButton,
                         outlineColor = outlineColor,
@@ -159,7 +160,11 @@ fun HomeScreen(
                     modifier = Modifier.weight(1f)
                 )
                 Button(onClick = {
-                    model.addHabitItem(newTaskText)
+										val newItem = HabitItem(
+												title = newTaskText,
+												tab = model.currentTab
+										)
+                    model.addHabitItem(newItem)
                     newTaskText = ""
                 }) {
                     Text("Add")
@@ -170,10 +175,10 @@ fun HomeScreen(
 
             model.currentHabitItems.forEachIndexed { index, item ->
                 HabitChecklistItem(
-                    item = item.label,
+                    item = item.title,
                     checked = item.completed,
                     textColor = textColor,
-                    onToggle = { model.toggleHabitItem(index) }
+                    onToggle = { model.toggleHabitItem(item) }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }

@@ -10,21 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dev.csse.ceha.mobileapp.Quest
+import dev.csse.ceha.mobileapp.HabitItem
 import kotlinx.serialization.Serializable
-
-/*
-   "TSApp" = TaskStak App, so "NApp" = Nurture App
-
-   I'm probably gonna be copying a lot of code from
-   the to-do list lab (lab 3) since it's similar to our
-   project. I've renamed some of the variables though,
-   like "TaskDetail" to "QuestInfo" and such.
-
-   Since you made the home screen code, idk how to move it
-   but it should be refactored to the new HomeScreen.kt file
-   (I'm also copying the file structure from lab 3).
-*/
 
 sealed class Routes {
     @Serializable
@@ -50,7 +37,7 @@ fun NApp(
 
             backStackEntry ->
             val currentInfo: Routes.QuestInfo = backStackEntry.toRoute()
-            val currentQuest: Quest? = model.findQuestById(currentInfo.id)
+            val currentHabitItem: HabitItem? = model.findHabitItemById(currentInfo.id)
 
             Scaffold(
                 topBar = {
@@ -65,8 +52,8 @@ fun NApp(
                 modifier = Modifier.fillMaxSize()
             ) {
                 innerPadding ->
-                if (currentQuest != null) QuestInfoScreen(
-                    currentQuest,
+                if (currentHabitItem != null) EditHabitItemScreen(
+                    currentHabitItem,
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize(),

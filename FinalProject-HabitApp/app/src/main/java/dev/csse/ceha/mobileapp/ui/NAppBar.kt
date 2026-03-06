@@ -27,14 +27,14 @@ fun NAppBar(
     canNavigateBack: Boolean = false,
     onUpClick: () -> Unit = {},
 
-    canDeleteQuests: Boolean = false,
+    canDeleteHabitItems: Boolean = false,
     onDeleteRequest: () -> Unit = {},
 ) {
     TopAppBar(
         // TODO: Make our own unique styling (I copied this one from TaskStak)
         title = { Text(
             "Nurture",
-            style = MaterialTheme.typogralphy.displayLarge
+            style = MaterialTheme.typography.displayLarge
         ) },
         colors = TopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -56,9 +56,9 @@ fun NAppBar(
             }
         },
         actions = {
-            if (canDeleteQuests) {
+            if (canDeleteHabitItems) {
                 IconButton(
-                    onClick = { if (model.completedQuestsExist) onDeleteRequest() }
+                    onClick = { if (model.completedHabitItemsExist) onDeleteRequest() }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
