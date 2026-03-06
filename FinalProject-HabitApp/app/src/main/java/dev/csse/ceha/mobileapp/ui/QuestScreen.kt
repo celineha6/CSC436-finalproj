@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import dev.csse.ceha.mobileapp.R
 
 /**
@@ -30,7 +29,6 @@ import dev.csse.ceha.mobileapp.R
  */
 @Composable
 fun QuestProgressScreen(
-    navController: NavController,
     model: NViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -45,9 +43,6 @@ fun QuestProgressScreen(
         levelLabel = model.levelLabel,
         quests = quests,
         modifier = modifier,
-        onGoHome = { navController.navigate(Routes.Home) },
-        onGoProfile = { navController.navigate(Routes.Profile) },
-        onGoShop = { navController.navigate(Routes.Shop) }
     )
 }
 
@@ -60,10 +55,6 @@ fun QuestProgressContent(
     levelLabel: String,
     quests: List<Triple<String, Float, String>>,
     modifier: Modifier = Modifier,
-    onGoHome: () -> Unit = {},
-    onGoProfile: () -> Unit = {},
-    onGoShop: () -> Unit = {},
-    onMenuClick: () -> Unit = {}
 ) {
     val pageBackground = Color(0xFF1D5A46)
     val headerBackground = Color(0xFF21473B)
@@ -74,35 +65,6 @@ fun QuestProgressContent(
             .fillMaxSize()
             .background(pageBackground)
     ) {
-        // Header bar with hamburger
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(headerBackground)
-                .statusBarsPadding()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            androidx.compose.material3.Text(
-                text = "nurture.",
-                color = textColor,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp
-            )
-
-            HamburgerMenu(
-                actions = listOf(
-                    MenuAction("Home") { onGoHome() },
-                    MenuAction("Profile") { onGoProfile() },
-                    MenuAction("Shop") { onGoShop() }
-                ),
-                iconColor = textColor,
-                modifier = Modifier
-            )
-        }
-
         // Body content (centered)
         Column(
             modifier = Modifier

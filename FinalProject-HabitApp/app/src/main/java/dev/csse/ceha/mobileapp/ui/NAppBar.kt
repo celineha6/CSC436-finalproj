@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,11 +42,14 @@ fun NAppBar(
     canDeleteHabitItems: Boolean = false,
     onDeleteRequest: () -> Unit = {},
 ) {
-    TopAppBar(
+		val scrolledContainerColor = null
+		TopAppBar(
         // TODO: Make our own unique styling (I copied this one from TaskStak)
         title = {
 						Text(
 								text = "nurture.",
+								style = MaterialTheme.typography.titleLarge,
+								color = MaterialTheme.colorScheme.primary
 						)
 				},
         navigationIcon = {
@@ -71,8 +75,15 @@ fun NAppBar(
                     )
                 }
             }
-        }
-    )
+        },
+				colors = TopAppBarColors(
+						containerColor = MaterialTheme.colorScheme.primary,
+						scrolledContainerColor = MaterialTheme.colorScheme.secondary,
+						navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
+						actionIconContentColor = MaterialTheme.colorScheme.tertiary,
+						titleContentColor = MaterialTheme.colorScheme.primary
+				)
+		)
 		/*
 		Column(
 				modifier = modifier

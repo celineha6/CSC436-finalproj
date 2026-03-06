@@ -76,14 +76,14 @@ fun NApp(
 												.fillMaxSize()
 								)
 						}
+						composable<Routes.Profile> {
+								QuestProgressScreen(
+										model = model,
+										modifier = Modifier
+												.fillMaxSize()
+								)
+						}
 				}
-
-				/*
-        composable<Routes.QuestInfo> {
-            // TODO: Make QuestInfoScreen, akin to TaskDetailScreen
-        }
-
-				 */
     }
 }
 
