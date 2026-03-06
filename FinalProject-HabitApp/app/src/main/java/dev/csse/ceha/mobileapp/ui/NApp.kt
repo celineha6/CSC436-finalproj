@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -26,7 +25,6 @@ import androidx.navigation.toRoute
 import dev.csse.ceha.mobileapp.HabitItem
 import kotlinx.serialization.Serializable
 
-@Serializable
 sealed class Routes {
     @Serializable
     data object Home
@@ -37,10 +35,13 @@ sealed class Routes {
 		@Serializable
 		data object Shop
 
+		/*
     @Serializable
     data class QuestInfo(
         val id: String
     )
+
+		 */
 }
 
 @Composable
@@ -49,43 +50,40 @@ fun NApp(
 ) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.Home,
-    ) {
-        composable<Routes.Home> {
+		Scaffold(
+				topBar = {
+						NAppBar(
+								model = model,
+								canNavigateBack = true,
+								onUpClick = {
+										navController.navigate(Routes.Home)
+								}
+						)
+				},
+				bottomBar = { NNavBar(navController) }
+		) { innerPadding ->
+				NavHost(
+						navController = navController,
+						startDestination = Routes.Home,
+						modifier = Modifier
+								.padding(innerPadding)
+								.fillMaxSize()
+				) {
+						composable<Routes.Home> {
+								HomeScreen(
+										model = model,
+										modifier = Modifier
+												.fillMaxSize()
+								)
+						}
+				}
 
-            backStackEntry ->
-            val currentInfo: Routes.QuestInfo = backStackEntry.toRoute()
-            val currentHabitItem: HabitItem? = model.findHabitItemById(currentInfo.id)
-
-            Scaffold(
-                topBar = {
-                    NAppBar(
-                        model = model,
-                        canNavigateBack = true,
-                        onUpClick = {
-                            navController.navigate(Routes.Home)
-                        }
-                    )
-                },
-								bottomBar = { NNavBar(navController) },
-                modifier = Modifier.fillMaxSize()
-            ) {
-                innerPadding ->
-                if (currentHabitItem != null) EditHabitItemScreen(
-                    currentHabitItem,
-                    modifier = Modifier
-												.padding(innerPadding)
-												.fillMaxSize(),
-                    model = model
-                )
-            }
-        }
-
+				/*
         composable<Routes.QuestInfo> {
             // TODO: Make QuestInfoScreen, akin to TaskDetailScreen
         }
+
+				 */
     }
 }
 

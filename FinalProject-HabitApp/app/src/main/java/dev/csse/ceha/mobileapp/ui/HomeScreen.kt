@@ -51,35 +51,6 @@ fun HomeScreen(
     val outlineColor = Color(0xFFCDDCC7)
     val textColor = Color(0xFFF2F5F3)
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(pageBackground)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(headerBackground)
-                .statusBarsPadding()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "nurture.",
-                color = textColor,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp
-            )
-            Text(
-                text = "≡",
-                color = textColor,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -185,7 +156,6 @@ fun HomeScreen(
             }
         }
     }
-}
 
 @Composable
 private fun HabitTab(

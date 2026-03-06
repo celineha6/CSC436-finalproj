@@ -2,7 +2,6 @@ package dev.csse.ceha.mobileapp.ui
 
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
@@ -10,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.HabitTab
 import java.util.Date
-import kotlin.math.ceil
 
 class NViewModel: ViewModel() {
 
