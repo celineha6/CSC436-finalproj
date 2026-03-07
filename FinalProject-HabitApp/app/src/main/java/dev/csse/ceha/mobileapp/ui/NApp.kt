@@ -83,6 +83,13 @@ fun NApp(
 												.fillMaxSize()
 								)
 						}
+						composable<Routes.Shop> {
+								ShopScreen(
+										model = model,
+										modifier = Modifier
+												.fillMaxSize()
+								)
+						}
 				}
     }
 }

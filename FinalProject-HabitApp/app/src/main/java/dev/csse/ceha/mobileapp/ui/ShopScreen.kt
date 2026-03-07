@@ -44,7 +44,6 @@ import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
 @Composable
 fun ShopScreen(
-    navController: NavController,
     model: NViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -54,9 +53,6 @@ fun ShopScreen(
         isOwned = { id -> model.isOwned(id) },
         onBuy = { item -> model.purchase(item) },
         modifier = modifier,
-        onGoHome = { navController.navigate(Routes.Home) },
-        onGoProfile = { navController.navigate(Routes.Profile) },
-        onGoShop = { navController.navigate(Routes.Shop) }
     )
 }
 
@@ -68,9 +64,6 @@ private fun ShopContent(
     isOwned: (String) -> Boolean,
     onBuy: (ShopItem) -> Boolean,
     modifier: Modifier = Modifier,
-    onGoHome: () -> Unit = {},
-    onGoProfile: () -> Unit = {},
-    onGoShop: () -> Unit = {}
 ) {
     val pageBackground = Color(0xFF1D5A46)
     val headerBackground = Color(0xFF21473B)
@@ -102,15 +95,6 @@ private fun ShopContent(
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp
-            )
-
-            HamburgerMenu(
-                actions = listOf(
-                    MenuAction("Home") { onGoHome() },
-                    MenuAction("Profile") { onGoProfile() },
-                    MenuAction("Shop") { onGoShop() }
-                ),
-                iconColor = textColor
             )
         }
 
