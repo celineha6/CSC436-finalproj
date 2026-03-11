@@ -49,7 +49,7 @@ fun HomeScreen(
     val headerBackground = Color(0xFF21473B)
     val lightButton = Color(0xFFC4D6B7)
     val outlineColor = Color(0xFFCDDCC7)
-    val textColor = Color(0xFFF2F5F3)
+		val textColor = Color(0xFFF2F5F3)
 
         Column(
             modifier = Modifier
