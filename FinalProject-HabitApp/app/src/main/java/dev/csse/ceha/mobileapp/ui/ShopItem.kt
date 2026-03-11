@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 data class ShopItem(
     val id: String,
     val name: String,
-    val costXp: Int,
+    val cost: Int, // Quests and stuff should award xp AND gold or some currency
     @DrawableRes val iconRes: Int,
     val description: String = ""
 )
