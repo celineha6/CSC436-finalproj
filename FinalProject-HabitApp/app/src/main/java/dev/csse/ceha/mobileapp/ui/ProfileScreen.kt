@@ -17,34 +17,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.csse.ceha.mobileapp.QuestProgressItem
 import dev.csse.ceha.mobileapp.R
 
 @Composable
 fun ProfileScreen(
-	model: ProfileViewModel = viewModel(
-		factory = ProfileViewModel.Factory
-	),
+	model: HomeViewModel = viewModel(),
 	modifier: Modifier = Modifier
 ) {
-<<<<<<< HEAD:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/QuestScreen.kt
-    // Get dynamic quest progress from ViewModel
+	val characterName = model.characterName
+	val characterLevel = model.level
+
     val quests = model.questProgress.map { quest ->
         Triple(quest.title, quest.progress, quest.progressText)
     }
-=======
-		val uiState = model.uiState.collectAsStateWithLifecycle()
-		val characterName = uiState.value.userInfo.name
-		val characterLevel = uiState.value.userInfo.exp.level
-
-    val quests = listOf(
-        Triple("Drink Water", 0.6f, "3 / 5"),
-        Triple("Exercise", 0.8f, "4 / 5"),
-        Triple("Read", 0.2f, "1 / 5")
-    )
->>>>>>> 64e51166353d1d549342734d84551f7a51b6aba2:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/ProfileScreen.kt
 
     QuestProgressContent(
         characterName = characterName,
@@ -105,14 +92,14 @@ fun QuestProgressContent(
 
             quests.forEach { (title, progress, progressText) ->
                 QuestProgressItem(
-									title = title,
-									progress = progress,
-									progressText = progressText,
-									textColor = Color.White,
-									trackColor = Color.DarkGray,
-									fillColor = Color(0xFFC4D6B7),
-									mutedTextColor = Color.LightGray
-								)
+                    title = title,
+                    progress = progress,
+                    progressText = progressText,
+                    textColor = Color.White,
+                    trackColor = Color.DarkGray,
+                    fillColor = Color(0xFFC4D6B7),
+                    mutedTextColor = Color.LightGray
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
             }

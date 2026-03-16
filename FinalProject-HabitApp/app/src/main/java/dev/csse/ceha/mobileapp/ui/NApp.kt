@@ -27,19 +27,11 @@ sealed class Routes {
     @Serializable
     data object Home
 
-		@Serializable
-		data object Profile
+	@Serializable
+	data object Profile
 
-		@Serializable
-		data object Shop
-
-		/*
-    @Serializable
-    data class QuestInfo(
-        val id: String
-    )
-
-		 */
+	@Serializable
+	data object Shop
 }
 
 @Composable
@@ -48,94 +40,87 @@ fun NApp(
 ) {
     val navController = rememberNavController()
 
-		Scaffold(
-				topBar = {
-						NAppBar(
-								model = model,
-								canNavigateBack = true,
-								onUpClick = {
-										navController.navigate(Routes.Home)
-								}
-						)
-				},
-				bottomBar = { NNavBar(navController) }
-		) { innerPadding ->
-				NavHost(
-						navController = navController,
-						startDestination = Routes.Home,
-						modifier = Modifier
-								.padding(innerPadding)
-								.fillMaxSize()
-				) {
-						composable<Routes.Home> {
-								HomeScreen(
-										model = model,
-										modifier = Modifier.fillMaxSize()
-								)
-						}
-						composable<Routes.Profile> {
-<<<<<<< HEAD
-								QuestProgressScreen(
-										model = model,
-										modifier = Modifier.fillMaxSize()
-=======
-								ProfileScreen(
-										modifier = Modifier
-												.fillMaxSize()
->>>>>>> 64e51166353d1d549342734d84551f7a51b6aba2
-								)
-						}
-						composable<Routes.Shop> {
-								ShopScreen(
-										model = model,
-										modifier = Modifier.fillMaxSize()
-								)
-						}
+	Scaffold(
+		topBar = {
+			NAppBar(
+				model = model,
+				canNavigateBack = true,
+				onUpClick = {
+					navController.navigate(Routes.Home)
 				}
-    }
+			)
+		},
+		bottomBar = { NNavBar(navController) }
+	) { innerPadding ->
+		NavHost(
+			navController = navController,
+			startDestination = Routes.Home,
+			modifier = Modifier
+				.padding(innerPadding)
+				.fillMaxSize()
+		) {
+			composable<Routes.Home> {
+				HomeScreen(
+					model = model,
+					modifier = Modifier.fillMaxSize()
+				)
+			}
+			composable<Routes.Profile> {
+				ProfileScreen(
+					model = model,
+					modifier = Modifier.fillMaxSize()
+				)
+			}
+			composable<Routes.Shop> {
+				ShopScreen(
+					model = model,
+					modifier = Modifier.fillMaxSize()
+				)
+			}
+		}
+	}
 }
 
 enum class AppScreen(val route: Any, val title: String, val icon: ImageVector) {
-		HOME(
-				dev.csse.ceha.mobileapp.ui.Routes.Home,
-				"Home",
-				Icons.Default.Home
-		),
-		PROFILE(
-				dev.csse.ceha.mobileapp.ui.Routes.Profile,
-				"Local",
-				Icons.Default.Person
-		),
-		SHOP(
-				dev.csse.ceha.mobileapp.ui.Routes.Shop,
-				"Compass",
-				Icons.Default.ShoppingCart
-		)
+	HOME(
+		dev.csse.ceha.mobileapp.ui.Routes.Home,
+		"Home",
+		Icons.Default.Home
+	),
+	PROFILE(
+		dev.csse.ceha.mobileapp.ui.Routes.Profile,
+		"Local",
+		Icons.Default.Person
+	),
+	SHOP(
+		dev.csse.ceha.mobileapp.ui.Routes.Shop,
+		"Compass",
+		Icons.Default.ShoppingCart
+	)
 }
 
 @Composable
 fun NNavBar(
-		navController: NavController
+	navController: NavController
 ) {
-		val backStackEntry by navController
-				.currentBackStackEntryAsState()
-		val currentRoute = backStackEntry?.destination?.route
+	val backStackEntry by navController.currentBackStackEntryAsState()
+	val currentRoute = backStackEntry?.destination?.route
 
-
-		NavigationBar {
-				AppScreen.entries.forEach { item ->
-						val selected = currentRoute?.endsWith(item.route.toString()) == true
-						NavigationBarItem(
-								selected = selected,
-								onClick = {
-										navController.navigate(item.route)
-								},
-								icon = {
-										Icon(item.icon, contentDescription = item.title)
-								},
-								label = {
-										Text(item.title)
-								})
+	NavigationBar {
+		AppScreen.entries.forEach { item ->
+			val selected = currentRoute?.endsWith(item.route.toString()) == true
+			NavigationBarItem(
+				selected = selected,
+				onClick = {
+					navController.navigate(item.route)
+				},
+				icon = {
+					Icon(item.icon, contentDescription = item.title)
+				},
+				label = {
+					Text(item.title)
 				}
+			)
 		}
+	}
 }
