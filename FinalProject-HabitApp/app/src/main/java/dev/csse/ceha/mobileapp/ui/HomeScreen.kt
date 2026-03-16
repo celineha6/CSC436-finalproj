@@ -42,40 +42,42 @@ fun HomeScreen(
 	),
 	modifier: Modifier = Modifier
 ) {
-	var newTaskText by remember { mutableStateOf("") }
+    var newTaskText by remember { mutableStateOf("") }
 
-	val pageBackground = Color(0xFF1D5A46)
-	val headerBackground = Color(0xFF21473B)
-	val lightButton = Color(0xFFC4D6B7)
-	val outlineColor = Color(0xFFCDDCC7)
-	val textColor = Color(0xFFF2F5F3)
+    val pageBackground = Color(0xFF1D5A46)
+    val headerBackground = Color(0xFF21473B)
+    val lightButton = Color(0xFFC4D6B7)
+    val outlineColor = Color(0xFFCDDCC7)
+		val textColor = Color(0xFFF2F5F3)
 
-	Column(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(horizontal = 28.dp, vertical = 34.dp)
-	) {
-		Text(
-			text = model.dateLabel,
-			color = textColor,
-			fontSize = 18.sp,
-			fontWeight = FontWeight.SemiBold,
-			letterSpacing = 2.sp
-		)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp, vertical = 34.dp)
+        ) {
+            Text(
+                text = model.dateLabel,
+                color = textColor,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 2.sp
+            )
 
-		Spacer(modifier = Modifier.height(26.dp))
+            Spacer(modifier = Modifier.height(26.dp))
 
-		Row(verticalAlignment = Alignment.CenterVertically) {
-			Box(
-				modifier = Modifier
-					.size(76.dp)
-					.clip(CircleShape)
-					.background(Color(0xFF0D1B21)),
-				contentAlignment = Alignment.Center
-			) {
-				Text(text = "", fontSize = 37.sp)
-			}
-			Column(modifier = Modifier.padding(start = 16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(76.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF0D1B21)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    // Show equipped hat if any
+                    val equippedHat = model.getEquippedItem(ItemType.HAT)
+                    Text(text = equippedHat?.let { "🧸" } ?: "", fontSize = 37.sp)
+                }
+                Column(modifier = Modifier.padding(start = 16.dp)) {
 //                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)
 				Text(text = model.levelLabel, color = textColor, fontSize = 14.sp)
 			}
