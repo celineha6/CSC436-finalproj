@@ -72,22 +72,19 @@ fun NApp(
 						composable<Routes.Home> {
 								HomeScreen(
 										model = model,
-										modifier = Modifier
-												.fillMaxSize()
+										modifier = Modifier.fillMaxSize()
 								)
 						}
 						composable<Routes.Profile> {
 								QuestProgressScreen(
 										model = model,
-										modifier = Modifier
-												.fillMaxSize()
+										modifier = Modifier.fillMaxSize()
 								)
 						}
 						composable<Routes.Shop> {
 								ShopScreen(
 										model = model,
-										modifier = Modifier
-												.fillMaxSize()
+										modifier = Modifier.fillMaxSize()
 								)
 						}
 				}

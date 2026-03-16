@@ -51,7 +51,9 @@ fun ShopScreen(
         xp = model.xp,
         items = model.shopItems,
         isOwned = { id -> model.isOwned(id) },
+        isEquipped = { id -> model.isEquipped(id) },
         onBuy = { item -> model.purchase(item) },
+        onEquip = { item -> model.equipItem(item) },
         modifier = modifier,
     )
 }
@@ -62,7 +64,9 @@ private fun ShopContent(
     xp: Int,
     items: List<ShopItem>,
     isOwned: (String) -> Boolean,
+    isEquipped: (String) -> Boolean,
     onBuy: (ShopItem) -> Boolean,
+    onEquip: (ShopItem) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val pageBackground = Color(0xFF1D5A46)
@@ -144,11 +148,13 @@ private fun ShopContent(
         ) {
             items(items) { item ->
                 val owned = isOwned(item.id)
+                val equipped = isEquipped(item.id)
                 val affordable = xp >= item.costXp
 
                 ShopItemCard(
                     item = item,
                     owned = owned,
+                    equipped = equipped,
                     affordable = affordable,
                     textColor = textColor,
                     outlineColor = outlineColor,
@@ -159,6 +165,14 @@ private fun ShopContent(
                                 pendingBuy = item
                             } else {
                                 lastMessage = "Not enough XP for ${item.name}."
+                            }
+                        }
+                    },
+                    onClickEquip = {
+                        if (owned && !equipped) {
+                            val success = onEquip(item)
+                            if (success) {
+                                lastMessage = "Equipped ${item.name}!"
                             }
                         }
                     }
@@ -195,11 +209,13 @@ private fun ShopContent(
 private fun ShopItemCard(
     item: ShopItem,
     owned: Boolean,
+    equipped: Boolean,
     affordable: Boolean,
     textColor: Color,
     outlineColor: Color,
     accent: Color,
-    onClickBuy: () -> Unit
+    onClickBuy: () -> Unit,
+    onClickEquip: () -> Unit
 ) {
     val cardBg = Color(0xFF174A39)
 
@@ -242,25 +258,51 @@ private fun ShopItemCard(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        val buttonText = when {
-            owned -> "Owned"
-            affordable -> "Buy"
-            else -> "Need XP"
-        }
-
-        Button(
-            onClick = onClickBuy,
-            enabled = !owned && affordable,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = accent,
-                disabledContainerColor = Color(0xFF2A3F38)
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = buttonText,
-                color = if (!owned && affordable) Color(0xFF1A2D27) else textColor
-            )
+        // Show Equip button if owned but not equipped, otherwise show Buy/Need XP
+        if (owned && !equipped) {
+            Button(
+                onClick = onClickEquip,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = accent
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Equip",
+                    color = Color(0xFF1A2D27)
+                )
+            }
+        } else if (equipped) {
+            Button(
+                onClick = {},
+                enabled = false,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4A6B52),
+                    disabledContainerColor = Color(0xFF4A6B52)
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Equipped",
+                    color = textColor
+                )
+            }
+        } else {
+            val buttonText = if (affordable) "Buy" else "Need XP"
+            Button(
+                onClick = onClickBuy,
+                enabled = affordable,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = accent,
+                    disabledContainerColor = Color(0xFF2A3F38)
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = buttonText,
+                    color = if (affordable) Color(0xFF1A2D27) else textColor
+                )
+            }
         }
     }
 }
@@ -277,32 +319,38 @@ private fun ShopScreenPreview() {
                     name = "Rabbit Hat",
                     costXp = 120,
                     iconRes = R.drawable.rabbit,
-                    description = "A cute pixel bunny hat"
+                    description = "A cute pixel bunny hat",
+                    type = ItemType.HAT
                 ),
                 ShopItem(
                     id = "leaf_badge",
                     name = "Leaf Badge",
                     costXp = 80,
                     iconRes = R.drawable.rabbit,
-                    description = "Nature-themed profile badge"
+                    description = "Nature-themed profile badge",
+                    type = ItemType.BADGE
                 ),
                 ShopItem(
                     id = "forest_bg",
                     name = "Forest Theme",
                     costXp = 400,
                     iconRes = R.drawable.rabbit,
-                    description = "Unlock a forest style"
+                    description = "Unlock a forest style",
+                    type = ItemType.THEME
                 ),
                 ShopItem(
                     id = "seedling_pet",
                     name = "Seedling Pet",
                     costXp = 220,
                     iconRes = R.drawable.rabbit,
-                    description = "A tiny companion"
+                    description = "A tiny companion",
+                    type = ItemType.HAT
                 )
             ),
-            isOwned = { itemId -> itemId == "leaf_badge" },
-            onBuy = { false }
+            isOwned = { itemId: String -> itemId == "leaf_badge" },
+            isEquipped = { itemId: String -> false },
+            onBuy = { _: ShopItem -> false },
+            onEquip = { _: ShopItem -> true }
         )
     }
 }

@@ -110,12 +110,23 @@ class NViewModel: ViewModel() {
         }
     }
     val shopItems = listOf(
-        ShopItem("hat1", "Bunny Hat", 50, dev.csse.ceha.mobileapp.R.drawable.rabbit),
-        ShopItem("plant1", "Plant Decor", 30, dev.csse.ceha.mobileapp.R.drawable.rabbit)
+        ShopItem("hat1", "Bunny Hat", 50, dev.csse.ceha.mobileapp.R.drawable.rabbit, type = ItemType.HAT),
+        ShopItem("plant1", "Plant Decor", 30, dev.csse.ceha.mobileapp.R.drawable.rabbit, type = ItemType.THEME),
+        ShopItem("badge1", "Nature Badge", 25, dev.csse.ceha.mobileapp.R.drawable.rabbit, type = ItemType.BADGE)
     )
     private val ownedItemIds = mutableStateListOf<String>()
+    
+    // Currently equipped items (one per type) - using MutableState for Compose reactivity
+    private var equippedItemIds: MutableMap<ItemType, String> = mutableMapOf()
 
     fun isOwned(itemId: String): Boolean = ownedItemIds.contains(itemId)
+
+    fun isEquipped(itemId: String): Boolean = equippedItemIds.values.contains(itemId)
+    
+    fun getEquippedItem(type: ItemType): ShopItem? {
+        val equippedId = equippedItemIds[type] ?: return null
+        return shopItems.find { it.id == equippedId }
+    }
 
     fun purchase(item: ShopItem): Boolean {
         if (isOwned(item.id)) return false
@@ -125,4 +136,50 @@ class NViewModel: ViewModel() {
         ownedItemIds.add(item.id)
         return true
     }
+    
+    fun equipItem(item: ShopItem): Boolean {
+        if (!isOwned(item.id)) return false
+        equippedItemIds[item.type] = item.id
+        // Trigger recomposition by reassigning
+        equippedItemIds = equippedItemIds.toMutableMap()
+        return true
+    }
+    
+    fun unequipItem(type: ItemType): Boolean {
+        if (equippedItemIds.containsKey(type)) {
+            equippedItemIds.remove(type)
+            // Trigger recomposition by reassigning
+            equippedItemIds = equippedItemIds.toMutableMap()
+            return true
+        }
+        return false
+    }
+
+    // Quest progress data - dynamically calculated from habit completion
+    data class QuestProgress(
+        val title: String,
+        val current: Int,
+        val target: Int
+    ) {
+        val progress: Float
+            get() = if (target > 0) current.toFloat() / target else 0f
+        
+        val progressText: String
+            get() = "$current / $target"
+    }
+
+    // Calculate quest progress from actual habit data
+    val questProgress: List<QuestProgress>
+        get() {
+            val totalCompleted = habitTabs.sumOf { tab -> 
+                tab.habitItems.count { it.completed } 
+            }
+            val totalItems = habitTabs.sumOf { it.habitItems.size }
+
+            return listOf(
+                QuestProgress("Complete all tasks", totalCompleted, totalItems.coerceAtLeast(1)),
+                QuestProgress("Daily habits", completedCount, currentHabitItems.size.coerceAtLeast(1)),
+                QuestProgress("Build streaks", totalCompleted / 3, 10)
+            )
+        }
 }

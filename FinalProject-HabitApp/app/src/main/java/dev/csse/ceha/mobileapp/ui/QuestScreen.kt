@@ -32,11 +32,10 @@ fun QuestProgressScreen(
     model: NViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
-    val quests = listOf(
-        Triple("Drink Water", 0.6f, "3 / 5"),
-        Triple("Exercise", 0.8f, "4 / 5"),
-        Triple("Read", 0.2f, "1 / 5")
-    )
+    // Get dynamic quest progress from ViewModel
+    val quests = model.questProgress.map { quest ->
+        Triple(quest.title, quest.progress, quest.progressText)
+    }
 
     QuestProgressContent(
         characterName = model.characterName,

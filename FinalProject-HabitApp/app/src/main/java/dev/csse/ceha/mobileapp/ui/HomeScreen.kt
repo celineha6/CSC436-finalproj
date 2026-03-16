@@ -74,7 +74,9 @@ fun HomeScreen(
                         .background(Color(0xFF0D1B21)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "", fontSize = 37.sp)
+                    // Show equipped hat if any
+                    val equippedHat = model.getEquippedItem(ItemType.HAT)
+                    Text(text = equippedHat?.let { "🧸" } ?: "", fontSize = 37.sp)
                 }
                 Column(modifier = Modifier.padding(start = 16.dp)) {
 //                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)
