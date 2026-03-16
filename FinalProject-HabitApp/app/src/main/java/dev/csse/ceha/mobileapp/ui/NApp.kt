@@ -21,8 +21,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import dev.csse.ceha.mobileapp.HabitItem
 import kotlinx.serialization.Serializable
 
 sealed class Routes {
@@ -46,7 +44,7 @@ sealed class Routes {
 
 @Composable
 fun NApp(
-    model: NViewModel = viewModel<NViewModel>()
+    model: HomeViewModel = viewModel<HomeViewModel>()
 ) {
     val navController = rememberNavController()
 
@@ -77,8 +75,7 @@ fun NApp(
 								)
 						}
 						composable<Routes.Profile> {
-								QuestProgressScreen(
-										model = model,
+								ProfileScreen(
 										modifier = Modifier
 												.fillMaxSize()
 								)

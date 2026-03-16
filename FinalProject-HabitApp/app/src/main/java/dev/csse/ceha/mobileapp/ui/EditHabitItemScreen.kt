@@ -9,7 +9,7 @@ import dev.csse.ceha.mobileapp.HabitItem
 fun EditHabitItemScreen(
     habitItem: HabitItem,
     modifier: Modifier = Modifier,
-    model: NViewModel = viewModel<NViewModel>()
+    model: HomeViewModel = viewModel<HomeViewModel>()
 ) {
     // TODO: Make this screen
 }

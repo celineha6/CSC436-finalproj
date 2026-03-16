@@ -2,15 +2,11 @@ package dev.csse.ceha.mobileapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,17 +17,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.csse.ceha.mobileapp.QuestProgressItem
 import dev.csse.ceha.mobileapp.R
 
-/**
- * Route-level composable (uses ViewModel). Use this from NavHost.
- */
 @Composable
-fun QuestProgressScreen(
-    model: NViewModel = viewModel(),
-    modifier: Modifier = Modifier
+fun ProfileScreen(
+	model: ProfileViewModel = viewModel(
+		factory = ProfileViewModel.Factory
+	),
+	modifier: Modifier = Modifier
 ) {
+		val uiState = model.uiState.collectAsStateWithLifecycle()
+		val characterName = uiState.value.userInfo.name
+		val characterLevel = uiState.value.userInfo.exp.level
+
     val quests = listOf(
         Triple("Drink Water", 0.6f, "3 / 5"),
         Triple("Exercise", 0.8f, "4 / 5"),
@@ -39,8 +40,8 @@ fun QuestProgressScreen(
     )
 
     QuestProgressContent(
-        characterName = model.characterName,
-        levelLabel = model.levelLabel,
+        characterName = characterName,
+        levelLabel = "LVL $characterLevel",
         quests = quests,
         modifier = modifier,
     )
@@ -97,14 +98,14 @@ fun QuestProgressContent(
 
             quests.forEach { (title, progress, progressText) ->
                 QuestProgressItem(
-                    title = title,
-                    progress = progress,
-                    progressText = progressText,
-                    textColor = Color.White,
-                    trackColor = Color.DarkGray,
-                    fillColor = Color(0xFFC4D6B7),
-                    mutedTextColor = Color.LightGray
-                )
+									title = title,
+									progress = progress,
+									progressText = progressText,
+									textColor = Color.White,
+									trackColor = Color.DarkGray,
+									fillColor = Color(0xFFC4D6B7),
+									mutedTextColor = Color.LightGray
+								)
 
                 Spacer(modifier = Modifier.height(24.dp))
             }
