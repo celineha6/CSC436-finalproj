@@ -73,9 +73,9 @@ fun HomeScreen(
                         .background(Color(0xFF0D1B21)),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Show equipped hat if any
-                    val equippedHat = model.getEquippedItem(ItemType.HAT)
-                    Text(text = equippedHat?.let { "🧸" } ?: "", fontSize = 37.sp)
+                    // Show selected character emoji
+                    val character = model.selectedCharacter
+                    Text(text = character?.emoji ?: "🐰", fontSize = 37.sp)
                 }
                 Column(modifier = Modifier.padding(start = 16.dp)) {
 //                    Text(text = model.characterName, color = textColor, fontSize = 18.sp)

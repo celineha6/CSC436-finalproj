@@ -187,4 +187,12 @@ class HomeViewModel(
                 QuestProgress("Build streaks", totalCompleted / 3, 10)
             )
         }
+    
+    // Character selection
+    var selectedCharacter by mutableStateOf<Character?>(availableCharacters.first())
+        private set
+    
+    fun selectCharacter(character: Character) {
+        selectedCharacter = character
+    }
 }

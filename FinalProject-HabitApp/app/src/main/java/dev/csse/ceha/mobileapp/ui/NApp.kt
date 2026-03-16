@@ -3,6 +3,7 @@ package dev.csse.ceha.mobileapp.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -32,6 +33,9 @@ sealed class Routes {
 
 	@Serializable
 	data object Shop
+
+	@Serializable
+	data object CharacterSelect
 }
 
 @Composable
@@ -77,6 +81,13 @@ fun NApp(
 					modifier = Modifier.fillMaxSize()
 				)
 			}
+			composable<Routes.CharacterSelect> {
+				CharacterSelectionScreen(
+					currentCharacter = model.selectedCharacter,
+					onSelectCharacter = { character -> model.selectCharacter(character) },
+					modifier = Modifier.fillMaxSize()
+				)
+			}
 		}
 	}
 }
@@ -96,6 +107,11 @@ enum class AppScreen(val route: Any, val title: String, val icon: ImageVector) {
 		dev.csse.ceha.mobileapp.ui.Routes.Shop,
 		"Compass",
 		Icons.Default.ShoppingCart
+	),
+	CHARACTER(
+		dev.csse.ceha.mobileapp.ui.Routes.CharacterSelect,
+		"Character",
+		Icons.Default.Face
 	)
 }
 
