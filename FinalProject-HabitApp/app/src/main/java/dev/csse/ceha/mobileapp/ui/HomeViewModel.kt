@@ -7,11 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.HabitTab
+import dev.csse.ceha.mobileapp.data.UserInventoryRepository
+import kotlinx.coroutines.launch
 import java.util.Date
 
-class NViewModel: ViewModel() {
+class HomeViewModel(
+	val userRepo: UserInventoryRepository
+): ViewModel() {
 
 		private val DEBUG_HABIT_TABS: List<HabitTab> = listOf(
 				HabitTab("Water", mutableStateListOf()),
@@ -59,15 +64,10 @@ class NViewModel: ViewModel() {
         currentTab = habitTabs[index]
     }
 
-    private fun addXp(amount: Int) {
-        xp += amount
-    }
-
 		// Modifying the list of items
     fun toggleHabitItem(item: HabitItem) {
 				val oldIndex = currentTab.habitItems.indexOf(item)
-                val wasCompleted = item.completed
-                val nowCompleted = !wasCompleted
+        val wasCompleted = item.completed
 				val newItem = item
 						.copy(
 								completed = !item.completed
@@ -76,8 +76,10 @@ class NViewModel: ViewModel() {
 				currentTab.habitItems[oldIndex] = newItem
 				Log.d("itemAtOldIndex: ${currentTab.habitItems[oldIndex]}", "this is whatever is at the old index")
             // Award XP only when marking complete (not when unchecking)
-            if (!wasCompleted && nowCompleted) {
-                addXp(10) // choose your XP amount
+            if (!wasCompleted) {
+								viewModelScope.launch {
+										userRepo.updateExp(10) // choose your XP amount
+								}
             }
     }
 
@@ -109,6 +111,7 @@ class NViewModel: ViewModel() {
 						addHabitItem(debugHabitItem, habitTabs.random())
         }
     }
+<<<<<<< HEAD:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/NViewModel.kt
     val shopItems = listOf(
         ShopItem("hat1", "Bunny Hat", 50, dev.csse.ceha.mobileapp.R.drawable.rabbit, type = ItemType.HAT),
         ShopItem("plant1", "Plant Decor", 30, dev.csse.ceha.mobileapp.R.drawable.rabbit, type = ItemType.THEME),
@@ -183,3 +186,6 @@ class NViewModel: ViewModel() {
             )
         }
 }
+=======
+}
+>>>>>>> 64e51166353d1d549342734d84551f7a51b6aba2:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/HomeViewModel.kt

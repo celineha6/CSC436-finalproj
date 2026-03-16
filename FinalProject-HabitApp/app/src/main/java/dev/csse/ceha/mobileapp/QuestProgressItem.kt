@@ -1,4 +1,4 @@
-package dev.csse.ceha.mobileapp.ui
+package dev.csse.ceha.mobileapp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -36,12 +35,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
-private val homeScreenPreviewModel = NViewModel()
+private val homeScreenPreviewModel = HomeViewModel()
 
 @Composable
 fun HomeScreen(
-    model: NViewModel = viewModel(),
-    modifier: Modifier = Modifier
+	model: HomeViewModel = viewModel(),
+	modifier: Modifier = Modifier
 ) {
     var newTaskText by remember { mutableStateOf("") }
 
