@@ -9,8 +9,9 @@ enum class ItemType {
 }
 
 data class ShopItem(
+    val id: Long,
     val name: String,
-    val costXp: Int,
+    val cost: Int,
     @DrawableRes val iconRes: Int,
     val description: String = "",
     val type: ItemType = ItemType.HAT

@@ -140,9 +140,9 @@ class HomeViewModel(
 
     fun purchase(item: ShopItem): Boolean {
         if (isOwned(item.id)) return false
-        if (xp < item.costXp) return false
+        if (xp < item.cost) return false
 
-        xp -= item.costXp
+        xp -= item.cost
         ownedItemIds.add(item.id)
         return true
     }
@@ -199,5 +199,16 @@ class HomeViewModel(
     
     fun selectCharacter(character: Character) {
         selectedCharacter = character
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as MainApplication)
+                HomeViewModel(
+                    userRepo = application.userRepo
+                )
+            }
+        }
     }
 }

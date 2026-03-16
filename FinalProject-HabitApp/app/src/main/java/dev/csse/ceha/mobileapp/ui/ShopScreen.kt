@@ -39,12 +39,43 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.csse.ceha.mobileapp.R
 import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
+val DEBUG_SHOP_ITEMS: List<ShopItem> = listOf(
+    ShopItem(
+        id = 1L,
+        name = "Rabbit Hat",
+        cost = 120,
+        iconRes = R.drawable.rabbit,
+        description = "A cute pixel bunny hat"
+    ),
+    ShopItem(
+        id = 2L,
+        name = "Leaf Badge",
+        cost = 80,
+        iconRes = R.drawable.rabbit,
+        description = "Nature-themed profile badge"
+    ),
+    ShopItem(
+        id = 3L,
+        name = "Forest Theme",
+        cost = 400,
+        iconRes = R.drawable.rabbit,
+        description = "Unlock a forest style"
+    ),
+    ShopItem(
+        id = 4L,
+        name = "Seedling Pet",
+        cost = 220,
+        iconRes = R.drawable.rabbit,
+        description = "A tiny companion"
+    )
+)
+
 @Composable
 fun ShopScreen(
 	model: ProfileViewModel = viewModel(
 		factory = ProfileViewModel.Factory
 	),
-	items: List<ShopItem>,
+	// items: List<ShopItem>,
 	modifier: Modifier = Modifier,
 ) {
 	val pageBackground = Color(0xFF1D5A46)
@@ -56,6 +87,7 @@ fun ShopScreen(
 	val uiState = model.uiState.collectAsStateWithLifecycle()
 	val gold = uiState.value.userInfo.gold
 	val ownedItems = uiState.value.items
+    val items = DEBUG_SHOP_ITEMS
 
 	var pendingBuy: ShopItem? by remember { mutableStateOf(null) }
 	var lastMessage by remember { mutableStateOf("") }
@@ -257,33 +289,6 @@ private fun ShopItemCard(
 @Composable
 private fun ShopScreenPreview() {
 	MobileAppTheme {
-		ShopScreen(
-			items = listOf(
-				ShopItem(
-					name = "Rabbit Hat",
-					cost = 120,
-					iconRes = R.drawable.rabbit,
-					description = "A cute pixel bunny hat"
-				),
-				ShopItem(
-					name = "Leaf Badge",
-					cost = 80,
-					iconRes = R.drawable.rabbit,
-					description = "Nature-themed profile badge"
-				),
-				ShopItem(
-					name = "Forest Theme",
-					cost = 400,
-					iconRes = R.drawable.rabbit,
-					description = "Unlock a forest style"
-				),
-				ShopItem(
-					name = "Seedling Pet",
-					cost = 220,
-					iconRes = R.drawable.rabbit,
-					description = "A tiny companion"
-				)
-			),
-		)
+		ShopScreen()
 	}
 }
