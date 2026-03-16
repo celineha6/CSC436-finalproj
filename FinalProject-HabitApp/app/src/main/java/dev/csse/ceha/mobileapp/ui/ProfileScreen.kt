@@ -29,6 +29,12 @@ fun ProfileScreen(
 	),
 	modifier: Modifier = Modifier
 ) {
+<<<<<<< HEAD:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/QuestScreen.kt
+    // Get dynamic quest progress from ViewModel
+    val quests = model.questProgress.map { quest ->
+        Triple(quest.title, quest.progress, quest.progressText)
+    }
+=======
 		val uiState = model.uiState.collectAsStateWithLifecycle()
 		val characterName = uiState.value.userInfo.name
 		val characterLevel = uiState.value.userInfo.exp.level
@@ -38,6 +44,7 @@ fun ProfileScreen(
         Triple("Exercise", 0.8f, "4 / 5"),
         Triple("Read", 0.2f, "1 / 5")
     )
+>>>>>>> 64e51166353d1d549342734d84551f7a51b6aba2:FinalProject-HabitApp/app/src/main/java/dev/csse/ceha/mobileapp/ui/ProfileScreen.kt
 
     QuestProgressContent(
         characterName = characterName,
