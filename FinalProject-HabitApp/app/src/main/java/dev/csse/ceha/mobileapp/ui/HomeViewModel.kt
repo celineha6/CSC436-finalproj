@@ -7,18 +7,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.HabitTab
+import dev.csse.ceha.mobileapp.MainApplication
 import dev.csse.ceha.mobileapp.data.UserInventoryRepository
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class HomeViewModel(
-	val userRepo: UserInventoryRepository? = null
-): ViewModel() {
+	val userRepo: UserInventoryRepository
+) : ViewModel() {
 
-	private val DEBUG_HABIT_TABS = mutableStateListOf(
+	private val DEBUG_HABIT_TABS: List<HabitTab> = listOf(
 		HabitTab("Water", mutableStateListOf()),
 		HabitTab("Meals", mutableStateListOf()),
 		HabitTab("Exercise", mutableStateListOf())

@@ -36,7 +36,9 @@ sealed class Routes {
 
 @Composable
 fun NApp(
-    model: HomeViewModel = viewModel<HomeViewModel>()
+	model: HomeViewModel = viewModel(
+		factory = HomeViewModel.Factory
+	),
 ) {
     val navController = rememberNavController()
 

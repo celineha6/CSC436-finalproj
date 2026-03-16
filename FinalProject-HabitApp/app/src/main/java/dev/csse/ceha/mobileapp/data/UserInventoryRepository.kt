@@ -10,8 +10,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import dev.csse.ceha.mobileapp.ui.ShopItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private val USER_INVENTORY_NAME = "user_inventory"
 
@@ -45,7 +48,7 @@ class UserInventoryRepository(
 		.addCallback(databaseCallback)
 		.build()
 
-	private val ShopItemDao = database.shopItemDao()
+	private val shopItemDao = database.shopItemDao()
 
 	companion object {
 		private val Context.dataStore by preferencesDataStore(
@@ -68,6 +71,7 @@ class UserInventoryRepository(
 		val name = prefs[PreferenceKeys.USER_NAME] ?: ""
 		val exp = ExpInfo(
 			totalValue = prefs[PreferenceKeys.EXP_TOTAL_VALUE] ?: 0,
+			level = prefs[PreferenceKeys.EXP_LEVEL] ?: 0,
 			currentValue = prefs[PreferenceKeys.EXP_CURRENT_VALUE] ?: 0,
 			untilNextLevel = prefs[PreferenceKeys.EXP_UNTIL_NEXT_LEVEL] ?: 0
 		)
@@ -99,5 +103,11 @@ class UserInventoryRepository(
 		}
 	}
 
-	fun getShopItems() = ShopItemDao.getShopItems()
+	fun getShopItems() = shopItemDao.getShopItems()
+
+	fun addShopItem(item: ShopItemEntity) {
+		CoroutineScope(Dispatchers.IO).launch {
+			item.id = shopItemDao.addShopItem(item)
+		}
+	}
 }
