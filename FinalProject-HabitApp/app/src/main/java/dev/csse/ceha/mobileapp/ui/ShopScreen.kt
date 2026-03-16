@@ -61,8 +61,8 @@ fun ShopScreen(
 private fun ShopContent(
     xp: Int,
     items: List<ShopItem>,
-    isOwned: (String) -> Boolean,
-    isEquipped: (String) -> Boolean,
+    isOwned: (Long) -> Boolean,
+    isEquipped: (Long) -> Boolean,
     onBuy: (ShopItem) -> Boolean,
     onEquip: (ShopItem) -> Boolean,
     modifier: Modifier = Modifier,
@@ -313,7 +313,7 @@ private fun ShopScreenPreview() {
             xp = 320,
             items = listOf(
                 ShopItem(
-                    id = "rabbit_hat",
+                    id = 1L,
                     name = "Rabbit Hat",
                     costXp = 120,
                     iconRes = R.drawable.rabbit,
@@ -321,7 +321,7 @@ private fun ShopScreenPreview() {
                     type = ItemType.HAT
                 ),
                 ShopItem(
-                    id = "leaf_badge",
+                    id = 2L,
                     name = "Leaf Badge",
                     costXp = 80,
                     iconRes = R.drawable.rabbit,
@@ -329,7 +329,7 @@ private fun ShopScreenPreview() {
                     type = ItemType.BADGE
                 ),
                 ShopItem(
-                    id = "forest_bg",
+                    id = 3L,
                     name = "Forest Theme",
                     costXp = 400,
                     iconRes = R.drawable.rabbit,
@@ -337,7 +337,7 @@ private fun ShopScreenPreview() {
                     type = ItemType.THEME
                 ),
                 ShopItem(
-                    id = "seedling_pet",
+                    id = 4L,
                     name = "Seedling Pet",
                     costXp = 220,
                     iconRes = R.drawable.rabbit,
@@ -345,8 +345,8 @@ private fun ShopScreenPreview() {
                     type = ItemType.HAT
                 )
             ),
-            isOwned = { itemId: String -> itemId == "leaf_badge" },
-            isEquipped = { itemId: String -> false },
+            isOwned = { itemId: Long -> itemId == 2L },
+            isEquipped = { itemId: Long -> false },
             onBuy = { _: ShopItem -> false },
             onEquip = { _: ShopItem -> true }
         )
