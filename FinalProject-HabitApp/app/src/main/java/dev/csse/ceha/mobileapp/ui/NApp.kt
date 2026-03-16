@@ -44,7 +44,9 @@ sealed class Routes {
 
 @Composable
 fun NApp(
-    model: HomeViewModel = viewModel<HomeViewModel>()
+	model: HomeViewModel = viewModel(
+		factory = HomeViewModel.Factory
+	),
 ) {
     val navController = rememberNavController()
 
@@ -82,7 +84,7 @@ fun NApp(
 						}
 						composable<Routes.Shop> {
 								ShopScreen(
-										model = model,
+										items = emptyList(),
 										modifier = Modifier
 												.fillMaxSize()
 								)

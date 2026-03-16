@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 
 data class ProfileScreenUiState(
 	val userInfo: UserInfo = UserInfo(),
@@ -41,6 +43,20 @@ class ProfileViewModel(
 				started = SharingStarted.WhileSubscribed(5000L),
 				initialValue = ProfileScreenUiState(),
 			)
+
+	fun addShopItem(item: ShopItem) {
+		val itemEntity = ShopItemEntity(
+			name = item.name,
+			cost = item.cost,
+			iconRes = item.iconRes,
+			description = item.description
+		)
+		userRepo.addShopItem(itemEntity)
+
+		viewModelScope.launch {
+			userRepo.updateGold(-item.cost)
+		}
+	}
 
 	companion object {
 		val Factory: ViewModelProvider.Factory = viewModelFactory {

@@ -1,28 +1,30 @@
 package dev.csse.ceha.mobileapp.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import dev.csse.ceha.mobileapp.MainApplication
+import dev.csse.ceha.mobileapp.data.ShopItemEntity
+import dev.csse.ceha.mobileapp.data.UserInventoryRepository
 
-class ShopViewModel: ViewModel() {
+class ShopViewModel(
+	userRepo: UserInventoryRepository
+): ViewModel() {
 
-
-
-	/*
-	val shopItems = listOf(
-		ShopItem("hat1", "Bunny Hat", 50, dev.csse.ceha.mobileapp.R.drawable.rabbit),
-		ShopItem("plant1", "Plant Decor", 30, dev.csse.ceha.mobileapp.R.drawable.rabbit)
+	data class LibraryScreenUiState(
+		val ownedItems: List<ShopItemEntity>
 	)
-	private val ownedItemIds = mutableStateListOf<String>()
 
-	fun isOwned(itemId: String): Boolean = ownedItemIds.contains(itemId)
-
-	fun purchase(item: ShopItem): Boolean {
-		if (isOwned(item.id)) return false
-		if (xp < item.costXp) return false
-
-		xp -= item.costXp
-		ownedItemIds.add(item.id)
-		return true
+	companion object {
+		val Factory: ViewModelProvider.Factory = viewModelFactory {
+			initializer {
+				val application = (this[APPLICATION_KEY] as MainApplication)
+				ShopViewModel(
+					userRepo = application.userRepo
+				)
+			}
+		}
 	}
-
-	 */
 }

@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
 	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.ksp)
 }
 
 android {
@@ -33,6 +34,7 @@ android {
   }
   kotlinOptions {
     jvmTarget = "11"
+		freeCompilerArgs += listOf("-Xjvm-default=all")
   }
   buildFeatures {
     compose = true
@@ -56,6 +58,7 @@ dependencies {
 		implementation("androidx.datastore:datastore-preferences:1.1.1")
 	implementation(libs.androidx.room.common.jvm)
 	implementation(libs.androidx.room.ktx)
+	ksp(libs.androidx.room.compiler)
 
 	testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
