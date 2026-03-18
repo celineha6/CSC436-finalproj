@@ -37,7 +37,8 @@ import dev.csse.ceha.mobileapp.ui.theme.MobileAppTheme
 
 @Composable
 fun HomeScreen(
-    model: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
+	model: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
+	profileVieModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory),
     modifier: Modifier = Modifier
 ) {
     var newTaskText by remember { mutableStateOf("") }

@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,7 +88,11 @@ fun ShopScreen(
 	val uiState = model.uiState.collectAsStateWithLifecycle()
 	val gold = uiState.value.userInfo.gold
 	val ownedItems = uiState.value.items
-    val items = DEBUG_SHOP_ITEMS
+	var items = remember {
+		mutableStateListOf<ShopItem>().apply {
+			addAll(DEBUG_SHOP_ITEMS)
+		}
+	}
 
 	var pendingBuy: ShopItem? by remember { mutableStateOf(null) }
 	var lastMessage by remember { mutableStateOf("") }
@@ -101,25 +106,6 @@ fun ShopScreen(
 			.fillMaxSize()
 			.background(pageBackground)
 	) {
-		// Header (same vibe as Home)
-		Row(
-			modifier = Modifier
-				.fillMaxWidth()
-				.background(headerBackground)
-				.statusBarsPadding()
-				.padding(horizontal = 24.dp, vertical = 20.dp),
-			horizontalArrangement = Arrangement.SpaceBetween,
-			verticalAlignment = Alignment.CenterVertically
-		) {
-			Text(
-				text = "nurture.",
-				color = textColor,
-				fontSize = 30.sp,
-				fontWeight = FontWeight.SemiBold,
-				letterSpacing = 1.sp
-			)
-		}
-
 		// XP balance block
 		Column(
 			modifier = Modifier
@@ -196,11 +182,20 @@ fun ShopScreen(
 		AlertDialog(
 			onDismissRequest = { pendingBuy = null },
 			title = { Text("Purchase item?") },
-			text = { Text("Buy ${item.name} for ${item.cost} XP?") },
+			text = { Text("Buy ${item.name} for ${item.cost} Gold?") },
 			confirmButton = {
 				TextButton(
 					onClick = {
-						lastMessage = if (gold >= item.cost) "Purchased ${item.name}!" else "Not enough gold."
+						if (gold >= item.cost) {
+							lastMessage = "Purchased ${item.name}!"
+							onBuy(item)
+							items.remove(item)
+							pendingBuy = null
+						}
+						else {
+							lastMessage = "Not enough gold."
+						}
+
 					}
 				) { Text("Buy") }
 			},
@@ -212,7 +207,7 @@ fun ShopScreen(
 }
 
 @Composable
-private fun ShopItemCard(
+fun ShopItemCard(
 	item: ShopItem,
 	owned: Boolean,
 	affordable: Boolean,
@@ -255,7 +250,7 @@ private fun ShopItemCard(
 		Spacer(modifier = Modifier.height(6.dp))
 
 		Text(
-			text = "${item.cost} XP",
+			text = "${item.cost} GOLD",
 			color = textColor.copy(alpha = 0.85f),
 			fontSize = 13.sp
 		)
