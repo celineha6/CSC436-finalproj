@@ -1,6 +1,7 @@
 package dev.csse.ceha.mobileapp.data
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -12,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import dev.csse.ceha.mobileapp.ui.ShopItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -84,22 +86,30 @@ class UserInventoryRepository(
 		)
 	}
 
-	suspend fun updateName(value: String) {
-		context.dataStore.edit { prefs ->
-			prefs[PreferenceKeys.USER_NAME] = value
+	fun updateName(value: String) {
+		CoroutineScope(Dispatchers.IO).launch {
+			context.dataStore.edit { prefs ->
+				prefs[PreferenceKeys.USER_NAME] = value
+			}
 		}
 	}
 
-	suspend fun updateExp(new: Int) {
-		context.dataStore.edit { prefs ->
-			val current = prefs[PreferenceKeys.EXP_CURRENT_VALUE] ?: 0
-			prefs[PreferenceKeys.EXP_CURRENT_VALUE] = current + new
+	fun updateExp(new: Int) {
+		CoroutineScope(Dispatchers.IO).launch {
+			context.dataStore.edit { prefs ->
+				val current = prefs[PreferenceKeys.EXP_CURRENT_VALUE] ?: 0
+				prefs[PreferenceKeys.EXP_CURRENT_VALUE] = current + new
+			}
 		}
 	}
 
-	suspend fun updateGold(value: Int) {
-		context.dataStore.edit { prefs ->
-			prefs[PreferenceKeys.USER_GOLD_VALUE] = value
+	fun updateGold(new: Int) {
+		CoroutineScope(Dispatchers.IO).launch {
+			context.dataStore.edit { prefs ->
+				val current = prefs[PreferenceKeys.USER_GOLD_VALUE] ?: 0
+				prefs[PreferenceKeys.USER_GOLD_VALUE] = current + new
+				Log.d("updateGold($new)", "current: $current, new: $new")
+			}
 		}
 	}
 

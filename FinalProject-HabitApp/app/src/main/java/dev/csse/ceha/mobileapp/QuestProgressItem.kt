@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,42 +27,54 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuestProgressItem(
-    title: String,
-    progress: Float,
-    progressText: String,
-    textColor: Color,
-    trackColor: Color,
-    fillColor: Color,
-    mutedTextColor: Color
+	title: String,
+	progress: Float,
+	progressText: String,
+	textColor: Color,
+	trackColor: Color,
+	fillColor: Color,
+	mutedTextColor: Color,
+	goldReward: Int,
+	onComplete: (Int) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(12.dp)
-                    .background(Color(0xFFD9D9D9))
-            )
-            Text(
-                text = title,
-                color = textColor,
-                fontSize = 34.sp,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-        }
+	Column(modifier = Modifier.fillMaxWidth()) {
+		Row(verticalAlignment = Alignment.CenterVertically) {
+			Box(
+				modifier = Modifier
+					.size(12.dp)
+					.background(Color(0xFFD9D9D9))
+			)
+			Text(
+				text = title,
+				color = textColor,
+				fontSize = 34.sp,
+				modifier = Modifier.padding(start = 10.dp)
+			)
+		}
 
-        Spacer(modifier = Modifier.height(10.dp))
-        LinearProgressIndicator(
-            progress = { progress.coerceIn(0f, 1f) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(18.dp)
-                .clip(RoundedCornerShape(18.dp)),
-            color = fillColor,
-            trackColor = trackColor,
-        )
+		Spacer(modifier = Modifier.height(10.dp))
+		LinearProgressIndicator(
+			progress = { progress.coerceIn(0f, 1f) },
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(18.dp)
+				.clip(RoundedCornerShape(18.dp)),
+			color = fillColor,
+			trackColor = trackColor,
+		)
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Text(text = progressText, color = mutedTextColor, fontSize = 23.sp)
-        }
-    }
+		Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+			Text(text = progressText, color = mutedTextColor, fontSize = 23.sp)
+			Button(
+				onClick = {
+					onComplete(goldReward)
+				}
+			) {
+				Icon(
+					imageVector = Icons.Default.CheckCircle,
+					contentDescription = "Complete quest"
+				)
+			}
+		}
+	}
 }
