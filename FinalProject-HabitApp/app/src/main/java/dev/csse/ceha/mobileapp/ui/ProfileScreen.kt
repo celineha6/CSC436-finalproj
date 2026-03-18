@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +42,7 @@ fun ProfileScreen(
 	modifier: Modifier = Modifier
 ) {
 
-	val uiState = profileViewModel.uiState.collectAsStateWithLifecycle().value
+	val uiState by profileViewModel.uiState.collectAsStateWithLifecycle()
 	val characterName = uiState.userInfo.name
 	val characterLevel = uiState.userInfo.exp.level
 

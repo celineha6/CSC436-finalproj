@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,16 +61,6 @@ fun QuestProgressItem(
 
 		Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
 			Text(text = progressText, color = mutedTextColor, fontSize = 23.sp)
-			Button(
-				onClick = {
-					onComplete(goldReward)
-				}
-			) {
-				Icon(
-					imageVector = Icons.Default.CheckCircle,
-					contentDescription = "Complete quest"
-				)
-			}
 		}
 	}
 }

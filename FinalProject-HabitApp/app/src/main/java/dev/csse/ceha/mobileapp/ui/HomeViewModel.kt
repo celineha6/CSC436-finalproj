@@ -16,12 +16,17 @@ import dev.csse.ceha.mobileapp.HabitItem
 import dev.csse.ceha.mobileapp.HabitTab
 import dev.csse.ceha.mobileapp.MainApplication
 import dev.csse.ceha.mobileapp.data.UserInventoryRepository
+import dev.csse.ceha.mobileapp.data.UserInfo
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class HomeViewModel(
 	val userRepo: UserInventoryRepository
 ) : ViewModel() {
+	
+	// Observe user data from repository for reactive updates
+	val userInfo: Flow<UserInfo> = userRepo.userFlow
 
 	private val DEBUG_HABIT_TABS: List<HabitTab> = listOf(
 		HabitTab("Water", mutableStateListOf()),
