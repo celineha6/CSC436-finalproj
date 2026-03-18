@@ -106,7 +106,7 @@ enum class AppScreen(val route: Any, val title: String, val icon: ImageVector) {
 	),
 	SHOP(
 		dev.csse.ceha.mobileapp.ui.Routes.Shop,
-		"Compass",
+		"Shop",
 		Icons.Default.ShoppingCart
 	),
 	CHARACTER(

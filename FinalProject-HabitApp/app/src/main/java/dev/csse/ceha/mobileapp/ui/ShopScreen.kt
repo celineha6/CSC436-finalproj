@@ -265,7 +265,7 @@ private fun ShopItemCard(
 		val buttonText = when {
 			owned -> "Owned"
 			affordable -> "Buy"
-			else -> "Need XP"
+			else -> "Need Gold!"
 		}
 
 		Button(
