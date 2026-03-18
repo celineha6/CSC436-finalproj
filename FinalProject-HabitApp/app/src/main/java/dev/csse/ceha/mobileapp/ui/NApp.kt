@@ -73,6 +73,7 @@ fun NApp(
 			}
 			composable<Routes.Profile> {
 				ProfileScreen(
+					homeViewModel = model,
 					modifier = Modifier.fillMaxSize()
 				)
 			}

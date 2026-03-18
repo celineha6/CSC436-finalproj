@@ -97,8 +97,20 @@ class UserInventoryRepository(
 	fun updateExp(new: Int) {
 		CoroutineScope(Dispatchers.IO).launch {
 			context.dataStore.edit { prefs ->
+				val total = prefs[PreferenceKeys.EXP_TOTAL_VALUE] ?: 0
 				val current = prefs[PreferenceKeys.EXP_CURRENT_VALUE] ?: 0
-				prefs[PreferenceKeys.EXP_CURRENT_VALUE] = current + new
+				val newTotal = total + new
+				val newCurrent = current + new
+				
+				// Calculate level and remaining XP
+				val level = newTotal / 500
+				val remaining = newCurrent % 500
+				val untilNext = 500 - remaining
+				
+				prefs[PreferenceKeys.EXP_TOTAL_VALUE] = newTotal
+				prefs[PreferenceKeys.EXP_CURRENT_VALUE] = newCurrent
+				prefs[PreferenceKeys.EXP_LEVEL] = level
+				prefs[PreferenceKeys.EXP_UNTIL_NEXT_LEVEL] = untilNext
 			}
 		}
 	}
